@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlanta & Raleigh-Cary NC — Marketplace Health Analysis</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --navy:    #0c1a2e;
+  --ink:     #1c2b3a;
+  --slate:   #3d5166;
+  --steel:   #6b7e8f;
+  --mist:    #edf1f5;
+  --white:   #ffffff;
+  --border:  #dde4ec;
+  --red:     #c0392b;
+  --red-lt:  #fdf0ef;
+  --amber:   #b45309;
+  --amber-lt:#fef9f0;
+  --green:   #15803d;
+  --green-lt:#f0fdf4;
+  --blue:    #1d4ed8;
+  --blue-lt: #eff6ff;
+  --atl:     #1d4ed8;
+  --nc:      #15803d;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #f4f7fb; color: var(--ink); font-size: 13px; line-height: 1.6; }
+
+/* ── HEADER ── */
+.header { background: var(--navy); padding: 40px 48px 32px; border-bottom: 3px solid var(--atl); }
+.header .eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; color: #64a6f4; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+.header h1 { font-size: 28px; font-weight: 700; color: white; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 10px; }
+.header h1 em { font-style: normal; color: #f87171; }
+.header .meta { font-size: 12px; color: #8fa8c0; display: flex; gap: 20px; flex-wrap: wrap; }
+.header .meta span { display: flex; align-items: center; gap: 5px; }
+.market-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.dot-atl { background: #60a5fa; }
+.dot-nc  { background: #4ade80; }
+
+/* ── LAYOUT ── */
+.page { max-width: 1120px; margin: 0 auto; padding: 36px 24px 80px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 800px) { .two-col, .three-col { grid-template-columns: 1fr; } .header { padding: 24px 20px; } .page { padding: 20px 14px 48px; } }
+
+/* ── SECTION HEADERS ── */
+.section-header { display: flex; align-items: baseline; gap: 10px; margin: 32px 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--border); }
+.section-header h2 { font-size: 15px; font-weight: 600; color: var(--navy); }
+.section-tag { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--steel); letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* ── STAT STRIP ── */
+.stat-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 24px; }
+.stat-box { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; }
+.stat-box .val { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+.stat-box .val.red { color: var(--red); }
+.stat-box .val.green { color: var(--green); }
+.stat-box .val.amber { color: var(--amber); }
+.stat-box .val.blue { color: var(--blue); }
+.stat-box .lbl { font-size: 11px; color: var(--steel); margin-top: 3px; }
+.stat-box .sub { font-size: 10px; color: #aab5c0; margin-top: 2px; }
+
+/* ── CARDS ── */
+.card { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px; margin-bottom: 14px; }
+.card h3 { font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+.card p { font-size: 12px; color: var(--slate); line-height: 1.6; }
+.card .tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 3px; margin-bottom: 8px; letter-spacing: 0.05em; text-transform: uppercase; }
+.tag-red    { background: var(--red-lt);    color: var(--red);   }
+.tag-amber  { background: var(--amber-lt);  color: var(--amber); }
+.tag-green  { background: var(--green-lt);  color: var(--green); }
+.tag-blue   { background: var(--blue-lt);   color: var(--blue);  }
+.tag-navy   { background: #e8edf4;          color: var(--navy);  }
+
+/* ── FINDING BLOCKS ── */
+.finding { border-left: 3px solid; border-radius: 0 6px 6px 0; padding: 12px 16px; margin-bottom: 10px; }
+.finding-red   { background: var(--red-lt);    border-color: var(--red);   }
+.finding-amber { background: var(--amber-lt);  border-color: var(--amber); }
+.finding-green { background: var(--green-lt);  border-color: var(--green); }
+.finding-blue  { background: var(--blue-lt);   border-color: var(--blue);  }
+.finding .f-label { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 5px; }
+.finding-red   .f-label { color: var(--red); }
+.finding-amber .f-label { color: var(--amber); }
+.finding-green .f-label { color: var(--green); }
+.finding-blue  .f-label { color: var(--blue); }
+.finding h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.finding p  { font-size: 12px; color: var(--slate); line-height: 1.55; }
+
+/* ── CHARTS ── */
+.chart-card { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px; }
+.chart-card h3 { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+.chart-card .chart-sub { font-size: 11px; color: var(--steel); margin-bottom: 12px; }
+.chart-legend { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.leg { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--slate); }
+.leg-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.chart-wrap { position: relative; width: 100%; height: 200px; }
+
+/* ── ACTION CARDS ── */
+.action-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 8px; }
+@media (max-width: 700px) { .action-grid { grid-template-columns: 1fr; } }
+.action-card { background: var(--navy); border-radius: 6px; padding: 20px; color: white; }
+.action-card .action-num { font-family: 'DM Mono', monospace; font-size: 28px; font-weight: 500; color: #60a5fa; line-height: 1; margin-bottom: 10px; }
+.action-card h3 { font-size: 14px; font-weight: 600; color: white; margin-bottom: 8px; }
+.action-card p { font-size: 12px; color: #8fa8c0; line-height: 1.6; }
+.action-card .action-metric { margin-top: 12px; background: rgba(255,255,255,0.07); border-radius: 4px; padding: 8px 12px; font-size: 11px; color: #64a6f4; font-family: 'DM Mono', monospace; }
+
+/* ── COMPARISON TABLE ── */
+.cmp-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.cmp-table th { background: var(--navy); color: white; padding: 8px 12px; text-align: left; font-weight: 500; font-size: 11px; }
+.cmp-table th.r { text-align: right; }
+.cmp-table td { padding: 7px 12px; border-bottom: 1px solid var(--mist); }
+.cmp-table td.r { text-align: right; }
+.cmp-table tr:last-child td { border-bottom: none; }
+.cmp-table tr:hover td { background: #f8fafc; }
+.atl-val { color: var(--atl); font-weight: 500; }
+.nc-val  { color: var(--nc);  font-weight: 500; }
+.red-val { color: var(--red); font-weight: 500; }
+.grn-val { color: var(--green); font-weight: 500; }
+
+/* ── PATTERN CARDS ── */
+.pattern-card { background: white; border: 1px solid var(--border); border-top: 3px solid var(--amber); border-radius: 6px; padding: 16px 18px; }
+.pattern-card h4 { font-size: 12px; font-weight: 600; color: var(--amber); margin-bottom: 6px; }
+.pattern-card p { font-size: 12px; color: var(--slate); line-height: 1.55; }
+
+/* ── FOOTER ── */
+.footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--steel); font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">PlanHub Market Development · Internal Analysis · June 2026</div>
+  <h1>Atlanta & Raleigh-Cary NC<br><em>Marketplace Health — Full Analysis Summary</em></h1>
+  <div class="meta">
+    <span><span class="market-dot dot-atl"></span> Atlanta · 72,760 bids · 1,420 subs · 591 GCs · Nov 2024–Apr 2026</span>
+    <span><span class="market-dot dot-nc"></span> Raleigh-Cary NC · 15,032 bids · 598 subs · 336 GCs · Nov 2024–Apr 2026</span>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- HEADLINE NUMBERS -->
+  <div class="section-header">
+    <h2>Headline numbers</h2>
+    <span class="section-tag">Both markets · as of Apr 2026</span>
+  </div>
+
+  <div class="stat-strip">
+    <div class="stat-box"><div class="val red">20.7%</div><div class="lbl">ATL avg monthly GC churn</div><div class="sub">258 of 453 GCs churned</div></div>
+    <div class="stat-box"><div class="val red">21.5%</div><div class="lbl">NC avg monthly GC churn</div><div class="sub">155 of 249 GCs churned</div></div>
+    <div class="stat-box"><div class="val amber">30.3%</div><div class="lbl">ATL sub churn (cumulative)</div><div class="sub">187 of 1,395 subs cancelled</div></div>
+    <div class="stat-box"><div class="val amber">23.1%</div><div class="lbl">NC sub churn (cumulative)</div><div class="sub">70 of 586 NC subs cancelled</div></div>
+    <div class="stat-box"><div class="val red">–91%</div><div class="lbl">Basic/Free DL/sub collapse</div><div class="sub">822 → 76 downloads/sub ATL</div></div>
+    <div class="stat-box"><div class="val green">94%</div><div class="lbl">Paying % of bids Apr 2026</div><div class="sub">Up from 83% Jan 2025</div></div>
+    <div class="stat-box"><div class="val red">3–4×</div><div class="lbl">Bid gap: retained vs churned GCs</div><div class="sub">27–43 vs 11–21 bids/GC/mo</div></div>
+    <div class="stat-box"><div class="val amber">4.5%</div><div class="lbl">ATL zero-bid projects 2026</div><div class="sub">Up from 1.2% in 2025</div></div>
+  </div>
+
+  <!-- KEY FINDINGS -->
+  <div class="section-header">
+    <h2>Key findings</h2>
+    <span class="section-tag">Validated from bid, download, project, and HubSpot data</span>
+  </div>
+
+  <div class="finding finding-red">
+    <div class="f-label">Finding 1 — GC Churn</div>
+    <h4>Bid volume is the single clearest driver of GC retention — and the gap is structural</h4>
+    <p>Retained GCs receive 27–43 bids per GC per month in Atlanta, versus 11–21 for churned GCs. This 3–4× gap is consistent across every month, every quarter, and both markets. Revenue band mix of subs bidding is nearly identical between retained and churned GC cohorts — it is not the quality of subs, it is the volume. GCs who don't get enough bids stop posting. That's the loop: fewer posts → fewer bids → more churn.</p>
+  </div>
+
+  <div class="finding finding-red">
+    <div class="f-label">Finding 2 — Sub Activation vs GC Churn</div>
+    <h4>Sub activations are not keeping pace with cumulative sub churn — and GC churn is diverging from sub health</h4>
+    <p>Atlanta adds 17–37 new subs per month but cumulative sub churn has grown from 14.6% (Jan 2025) to 30.3% (Apr 2026). GC monthly churn rate has stayed relatively stable at 18–27%, but sub retention is declining steadily — 85.4% in Jan 2025 to 69.7% by Apr 2026. These two curves are moving in opposite directions: GC churn is stabilizing while sub retention is deteriorating. The risk is that sub deterioration eventually feeds back into GC churn as fewer quality subs are available to bid.</p>
+  </div>
+
+  <div class="finding finding-red">
+    <div class="f-label">Finding 3 — Basic/Free Collapse</div>
+    <h4>The free tier has nearly disengaged from Atlanta projects — and it is not a project quality problem</h4>
+    <p>Basic/Free downloads per sub peaked at 822 in Mar 2025 and fell to 76 by Apr 2026 — a 91% collapse. The sub pool shrank 62% (154 → 58 subs). Project quality metrics are flat or improving: avg DL/project held 85–111, avg bids/project actually rose from 14.7 to 19.7. GC posting volume is unchanged at 63–81/month. The free tier is not being replenished and the subs who remain are individually less active. This is an activation and acquisition problem, not a supply problem.</p>
+  </div>
+
+  <div class="finding finding-amber">
+    <div class="f-label">Finding 4 — Churn Timing</div>
+    <h4>Downloads fall before bids — and both collapse in the final 30 days before cancellation</h4>
+    <p>The churn signal is concentrated in M-1 (one month before cancellation). Active rate drops from 38.5% at M-2 to 29.9% at M-1 to 16% at M0. Downloads drop before bids — subs stop browsing before they stop submitting. The median is zero at every relative month, meaning most churned subs were never truly engaged. The 12% who continue post-cancellation maintain 630–1,300 downloads/sub on free accounts — a 109-sub warm re-engagement pool in Atlanta alone.</p>
+  </div>
+
+  <div class="finding finding-amber">
+    <div class="f-label">Finding 5 — Mix Match</div>
+    <h4>Sub size and project type are misaligned — smaller subs dominate project types that require larger contractors</h4>
+    <p>Retail and Restaurant projects in Atlanta attract 48% &lt;$2M subs. Education and Municipal projects attract a meaningfully better mix: Education shows 37% &lt;$2M and 40% in the $2M–$4M band. In NC, Education has grown to 15% of building use (+2.8pp) while Restaurant and Retail are declining — this is a positive shift. Churned GCs consistently receive 3–6pp more &lt;$2M sub bids and fewer $4M–$10M bids than retained GCs. The sub size reaching a GC's projects is a retention signal.</p>
+  </div>
+
+  <div class="finding finding-amber">
+    <div class="f-label">Finding 6 — Project Changes</div>
+    <h4>Zero-bid projects are growing and project type mix is shifting toward lower-engagement work</h4>
+    <p>Atlanta: zero-bid projects tripled from 1.2% (2025) to 4.5% (2026). NC: 2.9% to 7.2%. Tenant Build-Outs grew from 15.4% to 19.6% of Atlanta projects — the type most correlated with GC churn. New Construction with Site Work declined 5.4pp. Renovation/remodel is growing. These are lower-value, narrower-trade projects that attract fewer sub bids, which feeds back into GC churn. The platform's project mix is drifting toward the types that perform worst.</p>
+  </div>
+
+  <div class="finding finding-green">
+    <div class="f-label">Finding 7 — Paying Subs</div>
+    <h4>Paying subs are the backbone — growing in share, growing in bid size, and stable in engagement</h4>
+    <p>Paying subs went from 83% of Atlanta bids (Jan 2025) to 94% (Apr 2026). Paying median bid grew from $43K to $63K. Downloads per paying sub held 770–1,354 throughout. Active 1yr+ paying subs generate 81.5 bids/sub — nearly 3× the next cohort. The paying base is healthy and increasingly dominant. The challenge is everything else around it is contracting.</p>
+  </div>
+
+  <div class="finding finding-green">
+    <div class="f-label">Finding 8 — Market Comparison</div>
+    <h4>NC shows similar structural patterns to Atlanta but is earlier in the curve</h4>
+    <p>NC sub retention is declining (89.2% Jan 2025 → 76.9% Apr 2026) on the same trajectory as Atlanta, roughly 6 months behind. NC paying % growing from 79% to 94%, same direction as Atlanta. NC GC churn more volatile (smaller market) but averaging 21.5%. NC project mix is actually improving — Education gaining, Restaurant/Retail declining. NC zero-bid rate (7.2%) is higher than Atlanta's (4.5%) — smaller sub pool means some project types go unserved.</p>
+  </div>
+
+  <!-- SUB RETENTION vs GC RETENTION CHART -->
+  <div class="section-header">
+    <h2>Sub retention vs GC retention</h2>
+    <span class="section-tag">Monthly · Jan 2025–Apr 2026 · diverging trajectories</span>
+  </div>
+
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Atlanta</h3>
+      <div class="chart-sub">Sub retention declining steadily; GC churn rate stabilizing</div>
+      <div class="chart-legend">
+        <div class="leg"><div class="leg-dot" style="background:#2563eb"></div>Sub retention %</div>
+        <div class="leg"><div class="leg-dot" style="background:#b91c1c"></div>GC churn rate %</div>
+        <div class="leg"><div class="leg-dot" style="background:#d97706"></div>New sub activations</div>
+      </div>
+      <div class="chart-wrap"><canvas id="c-atl-ret"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Raleigh-Cary NC</h3>
+      <div class="chart-sub">Same pattern — sub retention falling, GC churn volatile but stable</div>
+      <div class="chart-legend">
+        <div class="leg"><div class="leg-dot" style="background:#15803d"></div>Sub retention %</div>
+        <div class="leg"><div class="leg-dot" style="background:#b91c1c"></div>GC churn rate %</div>
+        <div class="leg"><div class="leg-dot" style="background:#d97706"></div>New sub activations</div>
+      </div>
+      <div class="chart-wrap"><canvas id="c-nc-ret"></canvas></div>
+    </div>
+  </div>
+
+  <!-- GROSS VS UNIQUE -->
+  <div class="section-header">
+    <h2>Gross views & downloads per project</h2>
+    <span class="section-tag">Project file · GC Posted · master/single · valid · monthly</span>
+  </div>
+
+  <div class="two-col">
+    <div class="chart-card">
+      <h3>Atlanta — gross engagement per project</h3>
+      <div class="chart-sub">Downloads/project flat 85–111; bids/project trending up; views/project stable</div>
+      <div class="chart-legend">
+        <div class="leg"><div class="leg-dot" style="background:#7c3aed"></div>DL/project</div>
+        <div class="leg"><div class="leg-dot" style="background:#d97706"></div>Bids/project</div>
+        <div class="leg"><div class="leg-dot" style="background:#0f1f3d" style="opacity:0.4"></div>Views/proj ÷10</div>
+      </div>
+      <div class="chart-wrap"><canvas id="c-atl-eng"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>NC — gross engagement per project</h3>
+      <div class="chart-sub">DL/project improving 48→79 peak; bids/project 8–14; smaller market, more volatile</div>
+      <div class="chart-legend">
+        <div class="leg"><div class="leg-dot" style="background:#7c3aed"></div>DL/project</div>
+        <div class="leg"><div class="leg-dot" style="background:#d97706"></div>Bids/project</div>
+      </div>
+      <div class="chart-wrap"><canvas id="c-nc-eng"></canvas></div>
+    </div>
+  </div>
+
+  <!-- MARKET COMPARISON TABLE -->
+  <div class="section-header">
+    <h2>Atlanta vs NC — side by side</h2>
+    <span class="section-tag">Q1 2025 vs Q1 2026 · key metrics</span>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden">
+    <table class="cmp-table">
+      <thead><tr><th>Metric</th><th>ATL Q1 2025</th><th>ATL Q1 2026</th><th>ATL Δ</th><th>NC Q1 2025</th><th>NC Q1 2026</th><th>NC Δ</th></tr></thead>
+      <tbody>
+        <tr><td>Total bids</td><td class="atl-val">11,313</td><td class="atl-val">11,479</td><td class="grn-val">+1.5%</td><td class="nc-val">1,890</td><td class="nc-val">1,633</td><td class="red-val">–13.6%</td></tr>
+        <tr><td>Unique subs bidding</td><td class="atl-val">386</td><td class="atl-val">410</td><td class="grn-val">+6.2%</td><td class="nc-val">176</td><td class="nc-val">165</td><td class="red-val">–6.3%</td></tr>
+        <tr><td>Unique GCs posting</td><td class="atl-val">167</td><td class="atl-val">161</td><td>–3.6%</td><td class="nc-val">92</td><td class="nc-val">94</td><td class="grn-val">+2.2%</td></tr>
+        <tr><td>Paying % of bids</td><td class="atl-val">81.5%</td><td class="atl-val">93.0%</td><td class="grn-val">+11.5pp</td><td class="nc-val">79.8%</td><td class="nc-val">92.8%</td><td class="grn-val">+13.0pp</td></tr>
+        <tr><td>Median bid amount</td><td class="atl-val">$42K</td><td class="atl-val">$51K</td><td class="grn-val">+21%</td><td class="nc-val">$30K</td><td class="nc-val">$26K</td><td class="red-val">–13%</td></tr>
+        <tr><td>Sub retention (cumulative)</td><td class="atl-val">85.4%</td><td class="atl-val">73.3%</td><td class="red-val">–12.1pp</td><td class="nc-val">88.7%</td><td class="nc-val">79.5%</td><td class="red-val">–9.2pp</td></tr>
+        <tr><td>GC monthly churn rate</td><td class="atl-val">24.4%</td><td class="atl-val">19.3%</td><td class="grn-val">–5.1pp</td><td class="nc-val">24.5%</td><td class="nc-val">21.6%</td><td class="grn-val">–2.9pp</td></tr>
+        <tr><td>Zero-bid projects</td><td class="atl-val">1.2%</td><td class="atl-val">4.5%</td><td class="red-val">+3.3pp</td><td class="nc-val">2.9%</td><td class="nc-val">7.2%</td><td class="red-val">+4.3pp</td></tr>
+        <tr><td>Basic/Free DL/sub</td><td class="atl-val">~600</td><td class="atl-val">~380</td><td class="red-val">–37%</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>Avg DL/project (gross)</td><td class="atl-val">95.2</td><td class="atl-val">103.6</td><td class="grn-val">+8.8%</td><td class="nc-val">52.5</td><td class="nc-val">61.5</td><td class="grn-val">+17.1%</td></tr>
+        <tr><td>Avg bids/project (gross)</td><td class="atl-val">17.2</td><td class="atl-val">18.1</td><td class="grn-val">+5.2%</td><td class="nc-val">10.6</td><td class="nc-val">10.5</td><td>–0.9%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PATTERNS -->
+  <div class="section-header">
+    <h2>Patterns likely to continue forming</h2>
+    <span class="section-tag">Forward-looking · based on current trajectories</span>
+  </div>
+
+  <div class="three-col">
+    <div class="pattern-card">
+      <h4>Sub retention will keep declining unless the free tier is addressed</h4>
+      <p>Atlanta sub retention has fallen 1pp per month for 16 consecutive months (85.4% → 69.7%). NC is on the same curve, 6 months behind. If nothing changes, Atlanta hits 60% retained by Q4 2026. The paying base is healthy but cannot sustain the marketplace alone as the free funnel dries up.</p>
+    </div>
+    <div class="pattern-card">
+      <h4>Zero-bid projects will keep growing as project mix shifts toward TBOs and renovations</h4>
+      <p>Tenant Build-Outs grew 4.2pp in Atlanta in one year. These projects correlate with lowest sub engagement and highest GC churn. As more GCs post TBOs and less New Construction comes to market, the zero-bid rate will continue to rise — further suppressing GC retention.</p>
+    </div>
+    <div class="pattern-card">
+      <h4>NC's improving project mix may produce better retention outcomes than Atlanta</h4>
+      <p>NC Education growing to 15% of projects, Restaurant/Retail declining. Education correlates with retained GCs and larger sub bids. If this trend holds, NC may show better GC retention than Atlanta over the next 2–3 quarters, despite being a smaller market with a thinner sub base.</p>
+    </div>
+    <div class="pattern-card">
+      <h4>The paying/free engagement gap will keep widening</h4>
+      <p>Paying subs: 772–1,354 DL/sub, median bid growing. Basic/Free: 76 DL/sub and falling. At current rates the free tier becomes functionally inactive by mid-2026 in Atlanta. In NC it may already be there. The platform is becoming a paying-only marketplace by default.</p>
+    </div>
+    <div class="pattern-card">
+      <h4>Post-churn sub browsing pool will keep growing</h4>
+      <p>63 subs browsing after cancellation in Jan 2025 grew to 109 by Apr 2026 — 73% growth in 16 months. These subs are maintaining 630–1,300 downloads/sub on free accounts. Without targeted re-engagement this pool will continue to grow quietly, representing unmonetized demand.</p>
+    </div>
+    <div class="pattern-card">
+      <h4>Out-of-market GCs will continue churning faster than locals</h4>
+      <p>Atlanta churned GCs: Dallas (8), Chicago (6), Miami (6), Pittsburgh (5) are all churning at high rates. These national GCs post Atlanta projects but don't return — likely because they're not getting enough bids to justify the effort. As the free sub tier contracts further, out-of-market GC ROI declines.</p>
+    </div>
+  </div>
+
+  <!-- OPPORTUNITIES -->
+  <div class="section-header">
+    <h2>Opportunities</h2>
+    <span class="section-tag">Data-supported · actionable now</span>
+  </div>
+
+  <div class="two-col">
+    <div class="finding finding-green">
+      <div class="f-label">Opportunity A</div>
+      <h4>109 post-churn subs are still actively browsing — warm re-engagement list</h4>
+      <p>These cancelled subs download 630–1,300 files/month on free accounts. They demonstrated intent to pay (they subscribed), they know the platform, and they're still using it. This is the highest-conversion re-engagement cohort available. A targeted campaign with a clear value proposition (bid volume, project quality, recent wins in their trade) has a measurable conversion opportunity.</p>
+    </div>
+    <div class="finding finding-green">
+      <div class="f-label">Opportunity B</div>
+      <h4>Education and institutional projects drive better sub engagement and GC retention</h4>
+      <p>Education projects in Atlanta attract 37% &lt;$2M vs 48% for Retail. Municipal shows better band distribution. Retained GCs skew education/government. NC is already improving in this direction. Recruiting GCs who specialize in institutional work — or helping existing GCs access more institutional projects — would directly improve marketplace health metrics.</p>
+    </div>
+    <div class="finding finding-blue">
+      <div class="f-label">Opportunity C</div>
+      <h4>The M-2 to M-1 window is the sub re-engagement trigger point</h4>
+      <p>Downloads drop from M-2 to M-1 before cancellation — that's a 30–60 day window where the sub is still active but disengaging. A triggered intervention at this point (based on download activity decline + active subscription) could meaningfully reduce cancellations. The signal is detectable from existing platform data.</p>
+    </div>
+    <div class="finding finding-blue">
+      <div class="f-label">Opportunity D</div>
+      <h4>Active 1yr+ paying subs are the highest-value cohort — and underrepresented</h4>
+      <p>Active 1yr+ paying subs generate 81.5 bids/sub vs 33.3 for &lt;1yr active and 24.0 for churned. Tenure compounds engagement. Programs that improve 6–12 month sub retention (onboarding quality, early bid success, trade-specific project matching) will produce outsized long-term bid volume.</p>
+    </div>
+  </div>
+
+  <!-- 3 THINGS TO DO -->
+  <div class="section-header">
+    <h2>Three things to do about it</h2>
+    <span class="section-tag">Prioritized by data confidence and impact</span>
+  </div>
+
+  <div class="action-grid">
+    <div class="action-card">
+      <div class="action-num">01</div>
+      <h3>Launch a post-churn re-engagement campaign for the 109 warm subs</h3>
+      <p>These subs are downloading 630–1,300 files/month after cancellation — they haven't left the market, they've left the paywall. Pull the list from HubSpot (ChargeBee Status = Cancelled, last download activity within 90 days), segment by trade and revenue band, and run a targeted re-activation offer. Expected conversion rate is higher than cold outreach because intent is demonstrated. This is revenue recovery, not acquisition.</p>
+      <div class="action-metric">ATL: 109 subs · NC: growing pool · Est. 15–25% re-activation at historical paying rates</div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">02</div>
+      <h3>Build a download-decay trigger to catch at-risk subs 30–60 days before cancellation</h3>
+      <p>Downloads drop before bids drop before cancellation. The M-1 signal is detectable from platform activity data. Build a trigger: if a paying sub's monthly downloads fall 50%+ month-over-month, flag for CSM outreach. This converts a reactive cancellation response into a proactive retention play. The intervention window is narrow — 30–60 days — but the data shows it exists and is consistent across both markets.</p>
+      <div class="action-metric">Signal: DL drop M-2 → M-1 · Window: 30–60 days pre-cancel · Applies to all paying subs</div>
+    </div>
+    <div class="action-card">
+      <div class="action-num">03</div>
+      <h3>Target GC recruitment toward institutional and education projects to improve bid density</h3>
+      <p>The data is clear: Education and Municipal projects attract better sub quality (larger rev bands), higher bid counts, and produce more retained GCs. Retail and Restaurant GCs are churning at higher rates and attracting primarily &lt;$2M subs. Shift GC acquisition and activation efforts toward GCs who post institutional work — or build a project-type filter into the GC onboarding flow so the right GCs end up on the right projects. NC is already moving in this direction organically.</p>
+      <div class="action-metric">Education: 37% &lt;$2M subs vs 48% for Retail · Retained GCs: 2–3× more institutional work</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Data sources: bi_634_bids.csv · New_Monthly_Project_Data_Tab__52/61_.csv · hubspot-crm-exports (ATL + NC) · N2PH_Sub_revenue_bands_Jan2023_Apr2026.xlsx · bi_634_downloads_atlanta/nc (aggregated) · Analysis period: Nov 2024–Apr 2026 · Prepared: June 2026 · Carter Howard, Sr. Director Market Development, PlanHub
+  </div>
+
+</div>
+
+<script>
+const months=['Jan 25','Feb 25','Mar 25','Apr 25','May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26','Apr 26'];
+const gc=getComputedStyle(document.body).getPropertyValue('--border')||'rgba(0,0,0,0.06)';
+
+// ATL sub retention vs GC churn
+new Chart(document.getElementById('c-atl-ret'),{type:'line',data:{labels:months,datasets:[
+  {label:'Sub retention %',data:[85.4,85.4,85.3,84.9,84.1,83.6,82.6,81.7,80.9,79.6,78.6,76.7,74.6,73.0,71.5,69.7],borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,0.06)',fill:true,borderWidth:2,pointRadius:2,tension:0.3},
+  {label:'GC churn %',data:[24.4,25.0,23.9,19.6,18.9,27.9,20.6,21.2,23.2,27.5,21.3,21.2,17.2,21.6,19.0,19.1],borderColor:'#b91c1c',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:0.3,borderDash:[4,3]},
+  {label:'New subs (÷2)',data:[17,27,37,32,33,21,22,33,23,21,17,23,21,26,24,8].map(v=>v*2),borderColor:'#d97706',backgroundColor:'transparent',borderWidth:1,pointRadius:2,tension:0.3,borderDash:[2,2],yAxisID:'y2'},
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{
+  x:{ticks:{font:{size:9},maxRotation:45,autoSkip:false},grid:{color:'rgba(0,0,0,0.05)'}},
+  y:{min:15,max:95,ticks:{font:{size:9},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,0.05)'}},
+  y2:{position:'right',min:0,max:80,ticks:{font:{size:9}},grid:{drawOnChartArea:false}}
+}}});
+
+// NC sub retention vs GC churn
+new Chart(document.getElementById('c-nc-ret'),{type:'line',data:{labels:months,datasets:[
+  {label:'Sub retention %',data:[89.2,89.0,88.1,88.3,88.1,87.6,86.7,86.5,84.9,84.3,83.5,81.8,80.0,79.1,78.1,76.9],borderColor:'#15803d',backgroundColor:'rgba(21,128,61,0.06)',fill:true,borderWidth:2,pointRadius:2,tension:0.3},
+  {label:'GC churn %',data:[33.3,15.6,14.7,26.3,32.4,19.4,22.2,27.0,32.4,17.9,19.5,21.3,27.5,15.8,21.2,17.9],borderColor:'#b91c1c',backgroundColor:'transparent',borderWidth:1.5,pointRadius:2,tension:0.3,borderDash:[4,3]},
+  {label:'New subs (scaled)',data:[15,12,17,13,11,11,12,7,11,11,3,15,10,6,7,2].map(v=>v*4),borderColor:'#d97706',backgroundColor:'transparent',borderWidth:1,pointRadius:2,tension:0.3,borderDash:[2,2],yAxisID:'y2'},
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{
+  x:{ticks:{font:{size:9},maxRotation:45,autoSkip:false},grid:{color:'rgba(0,0,0,0.05)'}},
+  y:{min:15,max:95,ticks:{font:{size:9},callback:v=>v+'%'},grid:{color:'rgba(0,0,0,0.05)'}},
+  y2:{position:'right',min:0,max:80,ticks:{font:{size:9}},grid:{drawOnChartArea:false}}
+}}});
+
+// ATL engagement per project
+new Chart(document.getElementById('c-atl-eng'),{type:'line',data:{labels:months,datasets:[
+  {label:'DL/proj',data:[95.9,95.2,94.4,102.4,85.2,99.7,88.4,96.6,107.0,107.8,93.7,106.7,111.4,99.5,95.0,96.2],borderColor:'#7c3aed',borderWidth:2,pointRadius:2,tension:0.3,backgroundColor:'transparent'},
+  {label:'Bids/proj',data:[17.6,17.1,17.2,17.2,14.7,17.1,15.1,17.5,19.1,19.7,16.9,17.7,18.7,17.7,18.0,16.3],borderColor:'#d97706',borderWidth:1.5,pointRadius:2,tension:0.3,backgroundColor:'transparent',borderDash:[4,3]},
+  {label:'Views/proj ÷10',data:[255.4,242.7,255.8,259.6,227.7,253.3,234.0,246.4,262.5,265.9,238.6,265.3,277.4,240.8,228.8,229.6].map(v=>v/10),borderColor:'rgba(15,31,61,0.4)',borderWidth:1,pointRadius:1,tension:0.3,backgroundColor:'transparent',borderDash:[2,2]},
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{
+  x:{ticks:{font:{size:9},maxRotation:45,autoSkip:false},grid:{color:'rgba(0,0,0,0.05)'}},
+  y:{ticks:{font:{size:9}},grid:{color:'rgba(0,0,0,0.05)'}}
+}}});
+
+// NC engagement per project
+new Chart(document.getElementById('c-nc-eng'),{type:'line',data:{labels:months,datasets:[
+  {label:'DL/proj',data:[62.0,47.9,48.5,60.8,48.9,56.1,62.0,64.1,79.2,70.2,55.4,52.6,60.8,62.8,61.6,61.2],borderColor:'#7c3aed',borderWidth:2,pointRadius:2,tension:0.3,backgroundColor:'rgba(124,58,237,0.04)',fill:true},
+  {label:'Bids/proj',data:[13.5,9.2,8.9,9.9,8.8,8.5,12.6,11.0,14.2,11.4,7.8,8.8,9.9,10.0,11.5,9.8],borderColor:'#d97706',borderWidth:1.5,pointRadius:2,tension:0.3,backgroundColor:'transparent',borderDash:[4,3]},
+]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{
+  x:{ticks:{font:{size:9},maxRotation:45,autoSkip:false},grid:{color:'rgba(0,0,0,0.05)'}},
+  y:{ticks:{font:{size:9}},grid:{color:'rgba(0,0,0,0.05)'}}
+}}});
+</script>
+</body>
+</html>
