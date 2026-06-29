@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlanta Project per Trade — MoM May 2025–Jun 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0D1117;--ink2:#3D4654;--ink3:#8A93A0;
+  --rule:#DDE3EC;--paper:#F7F9FC;--white:#FFF;
+  --red:#C93737;--amber:#B86A00;--green:#1A7A4A;--blue:#1A4FBF;
+  --red-lt:#FBEAEA;--amber-lt:#FEF3E0;--green-lt:#E6F7EE;--blue-lt:#E8EFFE;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:12px;-webkit-font-smoothing:antialiased}
+
+.header{background:var(--ink);color:white;padding:28px 40px 22px;display:flex;justify-content:space-between;align-items:flex-end}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+h1{font-size:21px;font-weight:700;letter-spacing:-.02em;margin-bottom:5px}
+h1 em{font-style:normal;color:#93C5FD}
+.header-sub{font-size:11px;color:var(--ink3)}
+.as-of{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);text-align:right}
+
+.page{max-width:1400px;margin:0 auto;padding:24px 20px 56px}
+
+.tabs{display:flex;gap:0;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--white);margin-bottom:16px}
+.tab{flex:1;padding:11px 8px;border:none;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--ink3);border-right:1px solid var(--rule);text-align:center;transition:all .15s;line-height:1.3}
+.tab:last-child{border-right:none}
+.tab.on{background:var(--ink);color:white}
+.tab .tsub{display:block;font-size:9px;font-weight:400;font-family:'DM Mono',monospace;letter-spacing:.04em;text-transform:uppercase;margin-top:2px;opacity:.7}
+.tab.on .tsub{color:#93C5FD;opacity:1}
+
+.panel{display:none}.panel.on{display:block}
+
+.legend{display:flex;gap:14px;font-size:10px;color:var(--ink3);margin-bottom:10px;flex-wrap:wrap;align-items:center}
+.leg{display:flex;align-items:center;gap:4px}
+.ld{width:8px;height:8px;border-radius:2px}
+
+.tbl-outer{background:var(--white);border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:14px}
+.tbl-hdr{padding:10px 16px;font-size:12px;font-weight:700;background:var(--paper);border-bottom:1px solid var(--rule);color:var(--ink);display:flex;align-items:center;gap:8px}
+.badge{font-family:'DM Mono',monospace;font-size:9px;font-weight:600;padding:2px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em;background:var(--blue-lt);color:var(--blue)}
+
+.tbl-scroll{overflow-x:auto;max-height:680px;overflow-y:auto}
+table{width:100%;border-collapse:collapse;font-size:10.5px;white-space:nowrap}
+thead{position:sticky;top:0;z-index:10}
+th{background:var(--ink);color:white;padding:7px 9px;text-align:right;font-weight:600;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.03em;border-right:1px solid #2d3748}
+th:first-child{text-align:left;min-width:240px;position:sticky;left:0;z-index:11;background:var(--ink);border-right:2px solid #3d4a5c}
+th.th-sum{background:#1a3a5f;border-left:2px solid #3d4a5c}
+
+td{padding:5px 9px;text-align:right;border-bottom:1px solid var(--rule);border-right:1px solid #f0f3f7;color:var(--ink2);line-height:1.2}
+td:first-child{text-align:left;position:sticky;left:0;z-index:1;background:white;color:var(--ink);font-weight:500;border-right:2px solid var(--rule);font-size:10.5px}
+tr:nth-child(even) td{background:#F9FAFB}
+tr:nth-child(even) td:first-child{background:#F9FAFB}
+tr.grp td{background:#EDF1F5!important;font-weight:700;color:var(--ink)!important;font-size:11px;letter-spacing:.02em;font-family:'DM Mono',monospace}
+tr.grp td:first-child{background:#DDE3EC!important}
+tr:hover td{background:#EFF6FF!important}
+td.sum-col{background:#EBF2FF!important;font-weight:700;color:var(--blue);border-left:2px solid #BFDBFE}
+
+.hi{color:var(--green);font-weight:700}
+.lo{color:var(--red);font-weight:700}
+.warn{color:var(--amber);font-weight:600}
+.dim{color:var(--ink3)}
+.note{font-size:10px;color:var(--ink3);padding:8px 16px;border-top:1px solid var(--rule);font-style:italic}
+.footer{margin-top:36px;padding-top:12px;border-top:1px solid var(--rule);font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+@media(max-width:800px){.header{padding:20px;flex-direction:column;align-items:flex-start}.tabs{flex-direction:column}.tab{border-right:none;border-bottom:1px solid var(--rule)}}
+</style>
+</head>
+<body>
+<div class="header">
+  <div>
+    <div class="eyebrow">PlanHub · Market Development · Atlanta CBSA</div>
+    <h1>Project Volume per Trade <em>Month over Month</em></h1>
+    <div class="header-sub">GC Posted · master/single · valid · 29 trades · May 2025–Jun 2026 · 4 views</div>
+  </div>
+  <div class="as-of">June 2026</div>
+</div>
+<div class="page">
+
+<div class="tabs">
+  <button class="tab on" onclick="show('count',this)">Projects per trade<span class="tsub">Count of projects containing trade</span></button>
+  <button class="tab" onclick="show('pct',this)">% of monthly projects<span class="tsub">Share of total projects</span></button>
+  <button class="tab" onclick="show('bids',this)">Avg bids / project<span class="tsub">Competition intensity by trade</span></button>
+  <button class="tab" onclick="show('dls',this)">Avg downloads / project<span class="tsub">Engagement depth by trade</span></button>
+</div>
+
+<div class="legend">
+  <div class="leg"><div class="ld" style="background:var(--green)"></div><span class="hi">Green = monthly high for that trade</span></div>
+  <div class="leg"><div class="ld" style="background:var(--red)"></div><span class="lo">Red = monthly low for that trade</span></div>
+  <div class="leg"><div class="ld" style="background:var(--amber)"></div><span class="warn">Amber = notable shift</span></div>
+  <div class="leg"><div class="ld" style="background:#DDE3EC"></div><span class="dim">Gray = Jun 2026 partial month</span></div>
+</div>
+
+<!-- PROJECT COUNT -->
+<div class="panel on" id="panel-count">
+  <div class="tbl-outer">
+    <div class="tbl-hdr">Projects containing each trade — monthly count <span class="badge">Volume</span></div>
+    <div class="tbl-scroll"><table>
+      <thead><tr>
+        <th>Trade</th>
+        <th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th><th class="th-sum">Total</th>
+      </tr></thead>
+      <tbody id="count-body"></tbody>
+    </table></div>
+    <div class="note">One project can contain multiple trades. A project with 14 trades is counted once per trade. Oct 2025 is the peak month for nearly every trade — the highest-volume posting month in the dataset.</div>
+  </div>
+</div>
+
+<!-- % SHARE -->
+<div class="panel" id="panel-pct">
+  <div class="tbl-outer">
+    <div class="tbl-hdr">% of monthly projects containing each trade <span class="badge">% Share</span></div>
+    <div class="tbl-scroll"><table>
+      <thead><tr>
+        <th>Trade</th>
+        <th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th><th class="th-sum">Avg %</th>
+      </tr></thead>
+      <tbody id="pct-body"></tbody>
+    </table></div>
+    <div class="note">% = projects containing that trade ÷ total filtered projects that month. Electrical appears in ~88% of all projects. Exterior Improvements in ~47%. Lower-frequency trades (Equipment, Preconstruction) are present in 30–43% of projects.</div>
+  </div>
+</div>
+
+<!-- AVG BIDS -->
+<div class="panel" id="panel-bids">
+  <div class="tbl-outer">
+    <div class="tbl-hdr">Avg bids per project — for projects containing each trade <span class="badge">Bids/proj</span></div>
+    <div class="tbl-scroll"><table>
+      <thead><tr>
+        <th>Trade</th>
+        <th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th><th class="th-sum">Avg</th>
+      </tr></thead>
+      <tbody id="bids-body"></tbody>
+    </table></div>
+    <div class="note">Exterior Improvements, Masonry, Exterior Siding, Preconstruction, and Equipment/Supplies consistently generate the highest bids per project (23–30+). These are complex, multi-trade projects that attract heavy sub competition. Electrical and Demo are lower per project but appear in the most projects. Jun 26 bids are low — projects just posted.</div>
+  </div>
+</div>
+
+<!-- AVG DOWNLOADS -->
+<div class="panel" id="panel-dls">
+  <div class="tbl-outer">
+    <div class="tbl-hdr">Avg downloads per project — for projects containing each trade <span class="badge">DLs/proj</span></div>
+    <div class="tbl-scroll"><table>
+      <thead><tr>
+        <th>Trade</th>
+        <th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th><th class="th-sum">Avg</th>
+      </tr></thead>
+      <tbody id="dls-body"></tbody>
+    </table></div>
+    <div class="note">Exterior Siding, Masonry, Equipment/Supplies, Preconstruction, and Exterior Improvements average 130–160 downloads per project — 50%+ more than core MEP trades. These are larger, more complex project types that attract deep document downloading. Jan 2026 was the peak download month for most trades.</div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>Source: New_Monthly_Project_Data_Tab__70_.csv · GC Posted · master/single · valid · Trade Names CSV exploded · One project counted once per trade it contains</span>
+  <span>PlanHub Market Development · June 2026</span>
+</div>
+</div>
+
+<script>
+const M=['May 25','Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26*'];
+
+const TRADES=[
+  'Electrical and Low Voltage','Demolition and Site Construction','Painting and Wallcovering',
+  'Plumbing','Interior Walls','Ceilings and Insulation','HVAC','Concrete Construction',
+  'Flooring','Doors','Glass and Windows','Wood Carpentry and Plastics',
+  'Metal and Steel Construction','Kitchens and Baths','Fire Protection',
+  'Roofing','Thermal and Moisture Protection','Specialties','Cleaning and Construction Maintenance',
+  'Exterior Improvements and Landscaping','Exterior Siding and Masonry','Masonry Construction',
+  'Equipment / Supplies','Preconstruction','Planning and Supervision'
+];
+
+const COUNT=[
+  [105,91,95,101,97,107,84,80,91,85,85,80,84,109],
+  [91,91,98,95,97,112,78,83,85,85,88,82,81,104],
+  [96,83,90,96,98,109,77,76,86,78,79,80,89,93],
+  [96,85,88,91,96,105,73,78,86,78,77,78,84,101],
+  [92,85,91,94,95,104,75,72,84,78,76,79,85,92],
+  [92,85,91,94,95,104,75,72,84,78,76,79,85,92],
+  [94,84,90,93,92,106,71,74,83,76,76,76,85,99],
+  [89,86,89,92,86,99,68,76,83,86,79,72,81,91],
+  [96,83,85,93,90,105,71,70,79,71,74,76,82,93],
+  [87,80,83,90,89,103,64,72,80,75,75,79,84,95],
+  [87,80,83,90,89,103,64,72,80,75,75,79,84,95],
+  [88,83,82,92,93,101,69,70,76,73,74,72,78,89],
+  [81,78,81,83,83,96,66,72,76,64,75,68,77,85],
+  [85,70,68,80,77,93,67,63,75,69,63,67,78,82],
+  [80,65,74,78,79,92,64,66,72,61,67,63,74,79],
+  [71,72,68,80,77,88,63,69,71,66,65,59,71,77],
+  [71,72,68,80,77,88,63,69,71,66,65,59,71,77],
+  [71,70,76,68,64,83,56,61,69,61,60,60,64,72],
+  [76,66,73,76,63,76,56,62,61,62,57,64,58,69],
+  [45,47,47,59,61,63,49,43,48,51,53,36,43,56],
+  [39,41,45,55,61,64,43,45,51,47,45,37,48,46],
+  [44,44,44,53,61,64,46,46,49,41,47,30,48,48],
+  [37,42,34,48,43,52,36,27,39,30,41,33,36,44],
+  [32,33,39,42,43,41,34,29,36,41,43,29,33,45],
+  [32,33,39,42,43,41,34,29,36,41,43,29,33,45]
+];
+
+const PCT=[
+  [93.8,88.3,84.8,91.0,88.2,89.9,91.3,88.9,88.3,86.7,84.2,88.9,83.2,90.1],
+  [81.2,88.3,87.5,85.6,88.2,94.1,84.8,92.2,82.5,86.7,87.1,91.1,80.2,86.0],
+  [85.7,80.6,80.4,86.5,89.1,91.6,83.7,84.4,83.5,79.6,78.2,88.9,88.1,76.9],
+  [85.7,82.5,78.6,82.0,87.3,88.2,79.3,86.7,83.5,79.6,76.2,86.7,83.2,83.5],
+  [82.1,82.5,81.2,84.7,86.4,87.4,81.5,80.0,81.6,79.6,75.2,87.8,84.2,76.0],
+  [82.1,82.5,81.2,84.7,86.4,87.4,81.5,80.0,81.6,79.6,75.2,87.8,84.2,76.0],
+  [83.9,81.6,80.4,83.8,83.6,89.1,77.2,82.2,80.6,77.6,75.2,84.4,84.2,81.8],
+  [79.5,83.5,79.5,82.9,78.2,83.2,73.9,84.4,80.6,87.8,78.2,80.0,80.2,75.2],
+  [85.7,80.6,75.9,83.8,81.8,88.2,77.2,77.8,76.7,72.4,73.3,84.4,81.2,76.9],
+  [77.7,77.7,74.1,81.1,80.9,86.6,69.6,80.0,77.7,76.5,74.3,87.8,83.2,78.5],
+  [77.7,77.7,74.1,81.1,80.9,86.6,69.6,80.0,77.7,76.5,74.3,87.8,83.2,78.5],
+  [78.6,80.6,73.2,82.9,84.5,84.9,75.0,77.8,73.8,74.5,73.3,80.0,77.2,73.6],
+  [72.3,75.7,72.3,74.8,75.5,80.7,71.7,80.0,73.8,65.3,74.3,75.6,76.2,70.2],
+  [75.9,68.0,60.7,72.1,70.0,78.2,72.8,70.0,72.8,70.4,62.4,74.4,77.2,67.8],
+  [71.4,63.1,66.1,70.3,71.8,77.3,69.6,73.3,69.9,62.2,66.3,70.0,73.3,65.3],
+  [63.4,69.9,60.7,72.1,70.0,73.9,68.5,76.7,68.9,67.3,64.4,65.6,70.3,63.6],
+  [63.4,69.9,60.7,72.1,70.0,73.9,68.5,76.7,68.9,67.3,64.4,65.6,70.3,63.6],
+  [63.4,68.0,67.9,61.3,58.2,69.7,60.9,67.8,67.0,62.2,59.4,66.7,63.4,59.5],
+  [67.9,64.1,65.2,68.5,57.3,63.9,60.9,68.9,59.2,63.3,56.4,71.1,57.4,57.0],
+  [40.2,45.6,42.0,53.2,55.5,52.9,53.3,47.8,46.6,52.0,52.5,40.0,42.6,46.3],
+  [34.8,39.8,40.2,49.5,55.5,53.8,46.7,50.0,49.5,48.0,44.6,41.1,47.5,38.0],
+  [39.3,42.7,39.3,47.7,55.5,53.8,50.0,51.1,47.6,41.8,46.5,33.3,47.5,39.7],
+  [33.0,40.8,30.4,43.2,39.1,43.7,39.1,30.0,37.9,30.6,40.6,36.7,35.6,36.4],
+  [28.6,32.0,34.8,37.8,39.1,34.5,37.0,32.2,35.0,41.8,42.6,32.2,32.7,37.2],
+  [28.6,32.0,34.8,37.8,39.1,34.5,37.0,32.2,35.0,41.8,42.6,32.2,32.7,37.2]
+];
+
+const BIDS=[
+  [15.4,18.2,16.9,19.0,20.9,21.5,18.0,19.2,20.4,19.5,20.3,17.6,21.1,8.5],
+  [15.8,18.4,16.8,19.0,20.2,20.5,19.2,18.2,20.8,18.6,19.5,16.6,20.4,7.8],
+  [16.1,19.9,17.5,19.2,20.7,21.2,19.3,19.5,21.5,20.7,21.7,17.5,20.6,9.1],
+  [16.4,19.9,18.1,20.4,21.4,21.8,19.8,19.7,21.8,20.9,22.2,17.4,21.6,9.0],
+  [16.8,19.5,17.4,19.5,21.5,21.8,19.3,20.1,22.1,20.5,22.6,17.5,21.4,9.4],
+  [16.8,19.5,17.4,19.5,21.5,21.8,19.3,20.1,22.1,20.5,22.6,17.5,21.4,9.4],
+  [16.6,20.2,17.8,20.0,21.7,21.6,19.8,19.9,22.3,21.4,22.7,17.6,21.6,9.0],
+  [16.6,19.3,17.7,20.2,23.0,21.7,20.8,19.4,21.5,19.3,21.2,18.6,21.9,9.0],
+  [15.8,19.8,17.9,19.3,21.9,21.8,20.1,19.7,22.0,21.1,22.6,17.7,21.3,8.8],
+  [17.4,20.7,18.5,20.7,22.1,21.9,22.1,20.7,23.0,21.4,22.8,18.0,21.7,9.2],
+  [17.4,20.7,18.5,20.7,22.1,21.9,22.1,20.7,23.0,21.4,22.8,18.0,21.7,9.2],
+  [17.5,19.3,18.0,19.7,21.5,21.9,19.9,20.1,22.8,20.4,22.3,17.8,20.9,8.9],
+  [17.3,20.2,17.6,20.8,22.7,21.4,20.5,20.4,22.3,22.6,22.0,17.8,21.9,9.6],
+  [17.5,19.3,19.9,20.3,24.5,22.9,20.9,19.8,23.7,20.5,24.7,19.3,21.2,9.1],
+  [17.7,20.9,19.1,20.6,22.1,23.2,21.0,21.5,22.4,21.8,23.0,19.4,20.8,9.3],
+  [19.3,21.6,20.0,21.6,23.5,23.6,21.3,20.7,23.8,22.7,24.4,19.7,22.9,10.4],
+  [19.3,21.6,20.0,21.6,23.5,23.6,21.3,20.7,23.8,22.7,24.4,19.7,22.9,10.4],
+  [17.5,18.9,18.6,22.4,23.4,23.7,22.8,19.7,23.2,21.7,23.8,19.0,22.3,8.5],
+  [16.7,18.5,17.8,20.9,24.0,22.8,22.1,20.0,23.9,21.5,22.5,18.2,20.3,9.2],
+  [23.8,24.1,21.6,24.0,26.7,26.2,23.5,21.3,25.8,22.5,23.5,23.8,29.1,10.3],
+  [26.9,28.2,23.3,25.2,26.5,26.3,24.3,23.7,26.2,24.7,26.1,25.5,28.7,11.3],
+  [24.5,26.8,22.5,25.3,27.0,26.4,24.4,23.3,26.0,27.4,28.2,26.9,28.3,11.5],
+  [22.8,24.8,23.7,23.4,27.1,25.0,27.4,25.2,24.6,25.1,25.3,24.9,29.0,9.0],
+  [24.8,21.9,22.7,28.0,30.0,29.6,26.5,25.9,26.8,25.6,24.1,27.5,26.5,9.3],
+  [24.8,21.9,22.7,28.0,30.0,29.6,26.5,25.9,26.8,25.6,24.1,27.5,26.5,9.3]
+];
+
+const DLS=[
+  [87.7,105.3,94.4,103.0,116.2,114.1,99.2,113.6,116.3,107.3,105.0,101.6,101.4,70.8],
+  [89.9,106.3,97.1,103.9,114.5,109.8,105.8,109.0,124.4,103.8,101.0,99.4,99.3,67.9],
+  [91.1,112.6,98.7,104.1,116.4,113.8,105.1,116.5,126.2,113.7,111.4,101.9,100.6,75.7],
+  [91.9,112.7,100.1,109.2,118.2,115.1,104.8,118.1,126.5,112.8,113.4,100.4,104.2,73.3],
+  [92.9,109.4,98.6,105.4,118.1,115.5,103.2,119.8,128.0,112.7,114.1,100.0,103.3,77.1],
+  [92.9,109.4,98.6,105.4,118.1,115.5,103.2,119.8,128.0,112.7,114.1,100.0,103.3,77.1],
+  [92.6,114.7,99.0,107.0,119.9,114.5,104.9,118.8,128.1,115.1,115.2,101.8,104.3,73.8],
+  [94.4,110.2,99.5,109.1,126.7,115.0,113.3,114.3,126.4,107.3,109.3,106.5,105.4,75.9],
+  [89.1,112.5,100.8,104.2,120.3,116.2,107.7,118.0,126.6,114.0,113.6,103.1,102.8,73.2],
+  [97.6,115.8,104.4,109.1,122.3,115.6,118.0,123.0,133.1,116.9,115.1,103.1,104.9,75.9],
+  [97.6,115.8,104.4,109.1,122.3,115.6,118.0,123.0,133.1,116.9,115.1,103.1,104.9,75.9],
+  [96.1,109.5,102.9,106.4,118.0,115.0,107.7,118.4,130.4,111.7,113.8,103.6,103.4,74.6],
+  [93.1,113.3,102.8,111.6,125.8,113.2,110.8,121.0,130.7,121.9,113.8,106.6,106.1,80.2],
+  [96.3,112.8,110.3,109.0,131.7,119.6,111.1,121.8,133.5,110.3,121.4,108.1,102.2,76.9],
+  [96.4,121.5,107.8,112.7,125.0,121.6,107.8,126.0,131.1,120.4,116.6,111.1,102.2,77.5],
+  [99.6,122.6,113.9,116.9,129.7,124.6,114.5,123.4,137.7,120.6,123.5,115.5,110.6,84.2],
+  [99.6,122.6,113.9,116.9,129.7,124.6,114.5,123.4,137.7,120.6,123.5,115.5,110.6,84.2],
+  [95.9,113.3,104.1,117.7,132.2,126.0,117.0,119.4,134.0,120.5,123.5,109.7,110.9,76.7],
+  [90.9,104.6,99.2,111.7,129.0,115.3,115.9,116.8,135.6,114.6,114.3,102.3,103.7,73.3],
+  [129.8,142.4,132.3,128.4,146.4,138.9,128.6,136.2,156.2,123.5,127.2,144.7,135.4,92.1],
+  [139.6,156.9,139.1,131.6,145.0,137.1,130.3,139.4,152.7,139.2,138.5,149.2,133.3,101.8],
+  [129.3,149.2,140.5,134.9,145.0,141.6,133.6,142.7,155.7,148.8,144.5,152.4,131.1,96.8],
+  [120.1,138.4,143.5,128.3,154.1,136.9,141.7,156.8,149.0,147.8,138.1,147.3,139.0,86.8],
+  [129.8,134.9,134.7,141.6,156.7,148.4,139.2,146.9,157.7,138.4,131.9,156.3,138.5,88.0],
+  [129.8,134.9,134.7,141.6,156.7,148.4,139.2,146.9,157.7,138.4,131.9,156.3,138.5,88.0]
+];
+
+function buildTable(bodyId, data, isCnt, isPct){
+  const body = document.getElementById(bodyId);
+  let html = '';
+  TRADES.forEach((trade, ti) => {
+    const row = data[ti];
+    const vals = isPct ? row.slice(0,13) : row.slice(0,13);
+    const last = row[13]; // Jun 26
+    const max = Math.max(...vals);
+    const min = Math.min(...vals.filter(v=>v>0));
+    // Summary col
+    const sumVal = isCnt ? row.slice(0,13).reduce((a,b)=>a+b,0) :
+                   isPct ? (row.slice(0,13).reduce((a,b)=>a+b,0)/13).toFixed(1)+'%' :
+                   (row.slice(0,13).reduce((a,b)=>a+b,0)/13).toFixed(1);
+    const bg = ti%2===0?'':'background:#F9FAFB';
+    html += `<tr style="${bg}"><td>${trade}</td>`;
+    vals.forEach(v => {
+      const isMax = v===max && max>0;
+      const isMin = v===min && v>0 && v!==max;
+      const cls = isMax?'hi':isMin?'lo':'';
+      const disp = isPct ? v.toFixed(1)+'%' : isCnt ? v : v.toFixed(1);
+      html += `<td class="${cls}">${v===0?'—':disp}</td>`;
+    });
+    const lastDisp = isPct ? last.toFixed(1)+'%' : isCnt ? last : last.toFixed(1);
+    html += `<td class="dim">${last===0?'—':lastDisp}</td>`;
+    html += `<td class="sum-col">${sumVal}</td></tr>`;
+  });
+  body.innerHTML = html;
+}
+
+buildTable('count-body', COUNT, true, false);
+
+function show(id, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+id).classList.add('on');
+  btn.classList.add('on');
+
+  if(id==='count' && !document.getElementById('count-body').children.length)
+    buildTable('count-body', COUNT, true, false);
+  if(id==='pct' && !document.getElementById('pct-body').children.length)
+    buildTable('pct-body', PCT, false, true);
+  if(id==='bids' && !document.getElementById('bids-body').children.length)
+    buildTable('bids-body', BIDS, false, false);
+  if(id==='dls' && !document.getElementById('dls-body').children.length)
+    buildTable('dls-body', DLS, false, false);
+}
+</script>
+</body>
+</html>

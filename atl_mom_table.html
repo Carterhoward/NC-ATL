@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlanta Project MoM — May 2025–Jun 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0D1117;--ink2:#3D4654;--ink3:#8A93A0;
+  --rule:#DDE3EC;--paper:#F7F9FC;--white:#FFF;
+  --red:#C93737;--amber:#B86A00;--green:#1A7A4A;--blue:#1A4FBF;
+  --red-lt:#FBEAEA;--amber-lt:#FEF3E0;--green-lt:#E6F7EE;--blue-lt:#E8EFFE;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:12px;-webkit-font-smoothing:antialiased}
+
+.header{background:var(--ink);color:white;padding:28px 40px 24px;display:flex;justify-content:space-between;align-items:flex-end}
+.eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+h1{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:5px}
+h1 em{font-style:normal;color:#93C5FD}
+.header-sub{font-size:11px;color:var(--ink3)}
+.as-of{font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);text-align:right}
+
+.page{max-width:1400px;margin:0 auto;padding:24px 20px 56px}
+
+/* SECTION TABS */
+.tabs{display:flex;gap:0;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--white);margin-bottom:20px}
+.tab{flex:1;padding:11px 8px;border:none;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--ink3);border-right:1px solid var(--rule);text-align:center;transition:all .15s;line-height:1.3}
+.tab:last-child{border-right:none}
+.tab.on{background:var(--ink);color:white}
+.tab .tsub{display:block;font-size:9px;font-weight:400;font-family:'DM Mono',monospace;letter-spacing:.04em;text-transform:uppercase;margin-top:2px;opacity:.7}
+.tab.on .tsub{color:#93C5FD;opacity:1}
+
+/* VIEW TOGGLE */
+.view-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.view-btn{padding:4px 12px;border-radius:20px;border:1px solid var(--rule);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;color:var(--ink3);transition:all .15s}
+.view-btn.on{background:var(--ink);color:white;border-color:var(--ink)}
+.view-label{font-size:11px;color:var(--ink3);font-weight:500}
+
+/* TABLE CONTAINER */
+.tbl-outer{background:var(--white);border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.tbl-title{padding:10px 16px;font-size:12px;font-weight:700;background:var(--paper);border-bottom:1px solid var(--rule);color:var(--ink);display:flex;align-items:center;gap:8px}
+.tbl-title .badge{font-family:'DM Mono',monospace;font-size:9px;font-weight:600;padding:2px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:.05em}
+.badge-v{background:var(--blue-lt);color:var(--blue)}
+.badge-p{background:var(--green-lt);color:var(--green)}
+.tbl-wrap{overflow-x:auto;max-height:600px;overflow-y:auto}
+
+table{width:100%;border-collapse:collapse;font-size:11px;white-space:nowrap}
+thead{position:sticky;top:0;z-index:10}
+th{background:var(--ink);color:white;padding:8px 10px;text-align:right;font-weight:600;font-size:10px;font-family:'DM Mono',monospace;letter-spacing:.03em;border-right:1px solid #2d3748}
+th:first-child{text-align:left;min-width:220px;position:sticky;left:0;z-index:11;background:var(--ink);border-right:2px solid #3d4a5c}
+th.month-th{min-width:74px}
+
+td{padding:6px 10px;text-align:right;border-bottom:1px solid var(--rule);border-right:1px solid #f0f3f7;color:var(--ink2);line-height:1.2}
+td:first-child{text-align:left;position:sticky;left:0;z-index:1;background:white;color:var(--ink);font-weight:500;border-right:2px solid var(--rule);font-size:11px}
+
+tr:nth-child(even) td{background:#F9FAFB}
+tr:nth-child(even) td:first-child{background:#F9FAFB}
+tr.group-hdr td{background:#EDF1F5!important;font-weight:700;color:var(--ink)!important;font-size:11px;letter-spacing:.03em}
+tr.group-hdr td:first-child{background:#DDE3EC!important;color:var(--ink)!important}
+tr.total-row td{background:#E8EFFE!important;font-weight:700;color:var(--blue)!important;border-top:2px solid var(--blue)}
+tr.total-row td:first-child{background:#DBEAFE!important;color:var(--blue)!important}
+tr:hover td{background:#EFF6FF!important}
+
+/* CELL COLORS */
+.hi{color:var(--green);font-weight:700}
+.lo{color:var(--red);font-weight:700}
+.warn{color:var(--amber);font-weight:600}
+.dim{color:var(--ink3)}
+.pct-hi{color:var(--green);font-weight:600}
+.pct-lo{color:var(--red);font-weight:600}
+
+/* LEGEND */
+.legend{display:flex;gap:16px;font-size:10px;color:var(--ink3);margin-bottom:12px;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:5px}
+.leg-dot{width:8px;height:8px;border-radius:2px}
+
+/* PANEL */
+.panel{display:none}.panel.on{display:block}
+
+.note{font-size:10px;color:var(--ink3);padding:8px 16px;border-top:1px solid var(--rule);font-style:italic}
+.footer{margin-top:40px;padding-top:12px;border-top:1px solid var(--rule);font-family:'DM Mono',monospace;font-size:10px;color:var(--ink3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px}
+
+@media(max-width:800px){
+  .header{padding:20px;flex-direction:column;align-items:flex-start}
+  .tabs{flex-direction:column}
+  .tab{border-right:none;border-bottom:1px solid var(--rule)}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="eyebrow">PlanHub · Market Development · Atlanta CBSA</div>
+    <h1>Project Volume <em>Month over Month</em></h1>
+    <div class="header-sub">GC Posted · master/single · valid · May 2025–Jun 2026 · 1,465 projects · All metrics in one table</div>
+  </div>
+  <div class="as-of">June 2026</div>
+</div>
+
+<div class="page">
+
+<div class="tabs">
+  <button class="tab on" onclick="showPanel('overview',this)">Overview<span class="tsub">Volume + engagement</span></button>
+  <button class="tab" onclick="showPanel('but',this)">Building Use<span class="tsub">Volume + % share</span></button>
+  <button class="tab" onclick="showPanel('but_eng',this)">Building Use Eng.<span class="tsub">Bids + downloads/proj</span></button>
+  <button class="tab" onclick="showPanel('ct',this)">Const. Type<span class="tsub">Commercial vs Govt</span></button>
+  <button class="tab" onclick="showPanel('pt',this)">Project Type<span class="tsub">New · Reno · TI · Site</span></button>
+  <button class="tab" onclick="showPanel('value',this)">Project Value<span class="tsub">Size distribution</span></button>
+  <button class="tab" onclick="showPanel('gc',this)">GC Behavior<span class="tsub">New · returning · PPG</span></button>
+</div>
+
+<div class="legend">
+  <div class="leg-item"><div class="leg-dot" style="background:var(--green)"></div><span class="hi">Green = highest or notably above average</span></div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--red)"></div><span class="lo">Red = lowest or notably below average</span></div>
+  <div class="leg-item"><div class="leg-dot" style="background:var(--amber)"></div><span class="warn">Amber = watch — transitional or volatile</span></div>
+  <div class="leg-item"><div class="leg-dot" style="background:#DDE3EC"></div><span class="dim">Gray = partial month (Jun 2026 — bids/DLs still accumulating)</span></div>
+</div>
+
+<!-- OVERVIEW -->
+<div class="panel on" id="panel-overview">
+  <div class="tbl-outer">
+    <div class="tbl-title">Overall project volume and engagement metrics <span class="badge badge-v">Volume + Engagement</span></div>
+    <div class="tbl-wrap">
+    <table>
+      <thead><tr>
+        <th>Metric</th>
+        <th class="month-th">May 25</th><th class="month-th">Jun 25</th><th class="month-th">Jul 25</th><th class="month-th">Aug 25</th><th class="month-th">Sep 25</th><th class="month-th">Oct 25</th><th class="month-th">Nov 25</th><th class="month-th">Dec 25</th><th class="month-th">Jan 26</th><th class="month-th">Feb 26</th><th class="month-th">Mar 26</th><th class="month-th">Apr 26</th><th class="month-th">May 26</th><th class="month-th dim">Jun 26*</th>
+      </tr></thead>
+      <tbody>
+        <tr class="group-hdr"><td colspan="15">VOLUME</td></tr>
+        <tr><td>Total projects</td><td>112</td><td>103</td><td>112</td><td>111</td><td>110</td><td class="hi">119</td><td>93</td><td>91</td><td>103</td><td>98</td><td>101</td><td class="lo">90</td><td>101</td><td class="hi dim">121*</td></tr>
+        <tr><td>Unique GCs posting</td><td>81</td><td>74</td><td>75</td><td>76</td><td>77</td><td>74</td><td class="lo">63</td><td>67</td><td>75</td><td class="lo">66</td><td class="hi">81</td><td class="lo">63</td><td>68</td><td class="hi dim">84*</td></tr>
+        <tr><td>Projects per GC</td><td>1.4</td><td>1.4</td><td>1.5</td><td>1.5</td><td>1.4</td><td class="hi">1.6</td><td>1.5</td><td>1.4</td><td>1.4</td><td>1.5</td><td class="lo">1.2</td><td>1.4</td><td>1.5</td><td class="dim">1.4*</td></tr>
+        <tr class="group-hdr"><td colspan="15">ENGAGEMENT (from project file — cumulative per project)</td></tr>
+        <tr><td>Total bids across all projects</td><td>1,646</td><td>1,760</td><td>1,696</td><td>1,942</td><td>2,097</td><td class="hi">2,350</td><td>1,572</td><td>1,591</td><td>1,929</td><td>1,735</td><td>1,816</td><td class="lo">1,471</td><td>1,868</td><td class="lo dim">957*</td></tr>
+        <tr><td>Total downloads across all projects</td><td>9,522</td><td>10,239</td><td>9,863</td><td>10,687</td><td>11,748</td><td class="hi">12,789</td><td>8,684</td><td>9,571</td><td class="hi">11,457</td><td>9,736</td><td>9,568</td><td class="lo">8,689</td><td>9,273</td><td class="dim">8,123*</td></tr>
+        <tr><td>Total ITBs sent across all projects</td><td>1,553K</td><td>1,396K</td><td>1,550K</td><td>1,649K</td><td>1,659K</td><td class="hi">1,913K</td><td>1,449K</td><td>1,423K</td><td>1,592K</td><td>1,474K</td><td>1,477K</td><td class="lo">1,283K</td><td class="lo">1,291K</td><td class="dim">1,509K*</td></tr>
+        <tr class="group-hdr"><td colspan="15">PER-PROJECT AVERAGES</td></tr>
+        <tr><td>Avg bids per project</td><td>14.7</td><td>17.1</td><td>15.1</td><td>17.5</td><td class="hi">19.1</td><td class="hi">19.7</td><td>16.9</td><td>17.5</td><td class="hi">18.7</td><td>17.7</td><td>18.0</td><td class="lo">16.3</td><td>18.5</td><td class="lo dim">7.9*</td></tr>
+        <tr><td>Avg downloads per project</td><td>85.0</td><td>99.4</td><td>88.1</td><td>96.3</td><td class="hi">106.8</td><td class="hi">107.5</td><td>93.4</td><td>105.2</td><td class="hi">111.2</td><td>99.3</td><td>94.7</td><td>96.5</td><td>91.8</td><td class="lo dim">67.1*</td></tr>
+        <tr><td>Avg ITBs per project</td><td>13,869</td><td>13,552</td><td>13,838</td><td>14,852</td><td>15,086</td><td class="hi">16,077</td><td>15,579</td><td>15,636</td><td>15,459</td><td>15,037</td><td>14,624</td><td class="lo">14,261</td><td class="lo">12,781</td><td class="dim">12,468*</td></tr>
+        <tr class="group-hdr"><td colspan="15">PROJECT VALUE</td></tr>
+        <tr><td>Median project value (where populated)</td><td>$1.0M</td><td>$1.0M</td><td>$950K</td><td>$1.1M</td><td class="hi">$1.75M</td><td>$1.1M</td><td>$800K</td><td>$1.2M</td><td class="hi">$1.5M</td><td>$1.0M</td><td>$800K</td><td>$800K</td><td class="lo">$650K</td><td>$1.0M</td></tr>
+        <tr><td>% projects with value populated</td><td>52.7%</td><td>49.5%</td><td>50.0%</td><td class="hi">58.6%</td><td>52.7%</td><td class="hi">56.3%</td><td>50.5%</td><td>54.9%</td><td class="lo">45.6%</td><td>55.1%</td><td class="lo">44.6%</td><td>50.0%</td><td class="lo">36.6%</td><td class="lo">42.1%</td></tr>
+        <tr class="group-hdr"><td colspan="15">CONSTRUCTION TYPE MIX</td></tr>
+        <tr><td>% Commercial</td><td>81.2%</td><td>81.6%</td><td class="warn">77.7%</td><td class="hi">84.7%</td><td class="warn">78.2%</td><td>79.0%</td><td class="warn">73.1%</td><td>80.2%</td><td class="warn">77.7%</td><td>79.6%</td><td>80.2%</td><td class="hi">82.2%</td><td class="hi">82.2%</td><td>76.0%</td></tr>
+        <tr><td>% Government / Public</td><td>12.5%</td><td>13.6%</td><td>12.5%</td><td>11.7%</td><td class="hi">19.1%</td><td>16.0%</td><td class="hi">17.2%</td><td>14.3%</td><td>15.5%</td><td class="hi">18.4%</td><td>12.9%</td><td>13.3%</td><td class="lo">10.9%</td><td class="hi">19.0%</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note">* Jun 2026 is a partial month — bids and downloads continue to accumulate after posting. ITBs are sent at posting time so that figure is reliable. All other Jun 2026 engagement metrics will increase as the month progresses.</div>
+  </div>
+</div>
+
+<!-- BUILDING USE -->
+<div class="panel" id="panel-but">
+  <div class="view-row">
+    <span class="view-label">Show:</span>
+    <button class="view-btn on" onclick="toggleBUT('vol',this)">Project count (volume)</button>
+    <button class="view-btn" onclick="toggleBUT('pct',this)">% of monthly total (share)</button>
+  </div>
+  <div class="tbl-outer" id="but-vol-wrap">
+    <div class="tbl-title">Projects posted by building use type — volume <span class="badge badge-v">Count</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Building Use Type</th><th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th><th>Total</th></tr></thead>
+      <tbody>
+        <tr><td>Restaurant</td><td>19</td><td>21</td><td>23</td><td>12</td><td>17</td><td class="hi">30</td><td>22</td><td>10</td><td class="lo">7</td><td>16</td><td>18</td><td>19</td><td>13</td><td class="dim">22</td><td>249</td></tr>
+        <tr><td>Retail Store</td><td>18</td><td>18</td><td>12</td><td>18</td><td>20</td><td>17</td><td>12</td><td>14</td><td class="hi">22</td><td>15</td><td>19</td><td>13</td><td>17</td><td class="hi dim">24</td><td>239</td></tr>
+        <tr><td>Education / School / Univ.</td><td>6</td><td>6</td><td class="lo">3</td><td>6</td><td>9</td><td class="hi">10</td><td>5</td><td>8</td><td>8</td><td>8</td><td>4</td><td>5</td><td class="lo">2</td><td class="dim">5</td><td class="warn">85</td></tr>
+        <tr><td>Medical</td><td>5</td><td class="hi">12</td><td>5</td><td>8</td><td>6</td><td class="lo">3</td><td>7</td><td class="lo">2</td><td>6</td><td class="hi">12</td><td class="lo">2</td><td class="lo">2</td><td>8</td><td class="lo dim">2</td><td class="warn">80</td></tr>
+        <tr><td>Municipal</td><td>6</td><td class="lo">2</td><td>6</td><td class="lo">1</td><td>6</td><td class="lo">3</td><td class="hi">8</td><td>3</td><td>4</td><td>5</td><td>7</td><td>5</td><td>3</td><td class="hi dim">10</td><td>69</td></tr>
+        <tr><td>Mixed-Use</td><td>6</td><td>3</td><td>4</td><td class="lo">2</td><td>6</td><td>4</td><td class="lo">2</td><td class="hi">7</td><td>4</td><td>3</td><td>4</td><td>4</td><td>6</td><td class="dim">6</td><td>61</td></tr>
+        <tr><td>Office</td><td>6</td><td>4</td><td>5</td><td>6</td><td>4</td><td>3</td><td>3</td><td>4</td><td>6</td><td class="lo">2</td><td class="lo">1</td><td>5</td><td>6</td><td class="dim">3</td><td>58</td></tr>
+        <tr><td>Conv. Store / Gas Station</td><td>3</td><td>3</td><td class="hi">10</td><td>5</td><td class="lo">0</td><td>3</td><td>4</td><td>4</td><td>3</td><td>3</td><td>2</td><td class="lo">0</td><td>4</td><td class="lo dim">1</td><td>45</td></tr>
+        <tr><td>Park / Playground</td><td>2</td><td>6</td><td>4</td><td>4</td><td>4</td><td class="lo">1</td><td>3</td><td>4</td><td>4</td><td>3</td><td>2</td><td class="lo">0</td><td>4</td><td class="dim">3</td><td>44</td></tr>
+        <tr><td>Clinic / Hospital / Medical</td><td>7</td><td>1</td><td>2</td><td>6</td><td>1</td><td>2</td><td>1</td><td class="lo">0</td><td>3</td><td class="lo">0</td><td>2</td><td>1</td><td>3</td><td class="dim">4</td><td>33</td></tr>
+        <tr><td>Religious / Funeral</td><td>2</td><td>3</td><td class="lo">0</td><td>2</td><td>2</td><td>3</td><td>1</td><td>2</td><td>3</td><td>1</td><td>3</td><td class="hi">4</td><td>1</td><td class="dim">1</td><td>28</td></tr>
+        <tr><td>All other types</td><td>32</td><td>23</td><td>24</td><td>27</td><td>23</td><td>30</td><td>21</td><td>20</td><td>26</td><td>23</td><td>25</td><td>17</td><td>24</td><td class="dim">30</td><td>321</td></tr>
+        <tr class="total-row"><td>TOTAL</td><td>112</td><td>103</td><td>112</td><td>111</td><td>110</td><td>119</td><td>93</td><td>91</td><td>103</td><td>98</td><td>101</td><td>90</td><td>101</td><td class="dim">121</td><td>1,465</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="tbl-outer" id="but-pct-wrap" style="display:none">
+    <div class="tbl-title">Projects posted by building use type — % of monthly total <span class="badge badge-p">% Share</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Building Use Type</th><th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th></tr></thead>
+      <tbody>
+        <tr><td>Restaurant</td><td>17.0%</td><td>20.4%</td><td>20.5%</td><td>10.8%</td><td>15.5%</td><td class="hi">25.2%</td><td>23.7%</td><td>11.0%</td><td class="lo">6.8%</td><td>16.3%</td><td>17.8%</td><td>21.1%</td><td>12.9%</td><td class="dim">18.2%</td></tr>
+        <tr><td>Retail Store</td><td>16.1%</td><td>17.5%</td><td>10.7%</td><td>16.2%</td><td>18.2%</td><td>14.3%</td><td>12.9%</td><td>15.4%</td><td class="hi">21.4%</td><td>15.3%</td><td>18.8%</td><td>14.4%</td><td>16.8%</td><td class="hi dim">19.8%</td></tr>
+        <tr><td>Education / School / Univ.</td><td>5.4%</td><td>5.8%</td><td class="lo">2.7%</td><td>5.4%</td><td>8.2%</td><td class="hi">8.4%</td><td>5.4%</td><td>8.8%</td><td>7.8%</td><td>8.2%</td><td>4.0%</td><td>5.6%</td><td class="lo warn">2.0%</td><td class="dim">4.1%</td></tr>
+        <tr><td>Medical</td><td>4.5%</td><td class="hi">11.7%</td><td>4.5%</td><td>7.2%</td><td>5.5%</td><td class="lo">2.5%</td><td>7.5%</td><td class="lo">2.2%</td><td>5.8%</td><td class="hi">12.2%</td><td class="lo">2.0%</td><td class="lo">2.2%</td><td>7.9%</td><td class="lo dim">1.7%</td></tr>
+        <tr><td>Municipal</td><td>5.4%</td><td class="lo">1.9%</td><td>5.4%</td><td class="lo">0.9%</td><td>5.5%</td><td class="lo">2.5%</td><td class="hi">8.6%</td><td>3.3%</td><td>3.9%</td><td>5.1%</td><td>6.9%</td><td>5.6%</td><td>3.0%</td><td class="hi dim">8.3%</td></tr>
+        <tr><td>Office</td><td>5.4%</td><td>3.9%</td><td>4.5%</td><td>5.4%</td><td>3.6%</td><td>2.5%</td><td>3.2%</td><td>4.4%</td><td>5.8%</td><td>2.0%</td><td class="lo">1.0%</td><td>5.6%</td><td>5.9%</td><td class="dim">2.5%</td></tr>
+        <tr><td>Govt / Public (construction type)</td><td>12.5%</td><td>13.6%</td><td>12.5%</td><td>11.7%</td><td class="hi">19.1%</td><td>16.0%</td><td class="hi">17.2%</td><td>14.3%</td><td>15.5%</td><td class="hi">18.4%</td><td>12.9%</td><td>13.3%</td><td class="lo warn">10.9%</td><td class="hi dim">19.0%</td></tr>
+        <tr><td>Restaurant + Retail (combined)</td><td class="warn">33.0%</td><td class="warn">37.9%</td><td class="warn">31.3%</td><td class="warn">27.0%</td><td class="warn">33.6%</td><td class="hi warn">39.5%</td><td class="warn">36.6%</td><td class="warn">26.4%</td><td class="warn">28.2%</td><td class="warn">31.6%</td><td class="warn">36.6%</td><td class="warn">35.6%</td><td class="warn">29.7%</td><td class="warn dim">38.0%</td></tr>
+        <tr><td>Edu + Medical + Municipal (institutional)</td><td>15.2%</td><td class="hi">19.4%</td><td>12.5%</td><td>13.5%</td><td>19.1%</td><td>13.4%</td><td class="hi">21.5%</td><td>14.3%</td><td>17.5%</td><td class="hi">25.5%</td><td>11.9%</td><td>13.3%</td><td class="lo warn">12.9%</td><td class="dim">14.0%</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- BUILDING USE ENGAGEMENT -->
+<div class="panel" id="panel-but_eng">
+  <div class="view-row">
+    <span class="view-label">Show:</span>
+    <button class="view-btn on" onclick="toggleBUTEng('bids',this)">Avg bids / project</button>
+    <button class="view-btn" onclick="toggleBUTEng('dls',this)">Avg downloads / project</button>
+  </div>
+  <div class="tbl-outer" id="bue-bids-wrap">
+    <div class="tbl-title">Avg bids per project by building use type <span class="badge badge-v">Competition intensity</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Building Use Type</th><th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th></tr></thead>
+      <tbody>
+        <tr><td>Restaurant</td><td>15.5</td><td>12.7</td><td>19.0</td><td>12.3</td><td>15.1</td><td>17.3</td><td>12.5</td><td>17.0</td><td>20.9</td><td>15.8</td><td>14.1</td><td>13.3</td><td>19.2</td><td class="dim">10.2</td></tr>
+        <tr><td>Retail Store</td><td class="lo">9.4</td><td>16.2</td><td>13.9</td><td>14.1</td><td class="hi">24.0</td><td>15.8</td><td>18.0</td><td>19.6</td><td>12.1</td><td class="hi">24.9</td><td>16.6</td><td>16.0</td><td class="hi">23.0</td><td class="dim">8.2</td></tr>
+        <tr><td>Education / School / Univ.</td><td class="lo">3.8</td><td>18.0</td><td>11.7</td><td>14.7</td><td>11.0</td><td>19.3</td><td class="lo">6.0</td><td>12.0</td><td>22.1</td><td class="lo">9.2</td><td>20.0</td><td class="hi">30.6</td><td class="hi warn">46.5</td><td class="dim">2.6</td></tr>
+        <tr><td>Medical</td><td>12.0</td><td>24.8</td><td>18.0</td><td class="hi">26.5</td><td>21.0</td><td class="hi">26.3</td><td class="hi">33.3</td><td>17.0</td><td class="hi">29.8</td><td>21.3</td><td>22.0</td><td>14.0</td><td>17.8</td><td class="dim">5.5</td></tr>
+        <tr><td>Municipal</td><td>18.2</td><td class="hi">47.5</td><td>10.5</td><td class="hi">69.0</td><td>10.0</td><td class="lo">3.0</td><td>10.5</td><td>19.7</td><td>22.5</td><td class="lo">5.4</td><td class="hi">28.1</td><td>10.4</td><td>15.7</td><td class="dim">3.0</td></tr>
+        <tr><td>Mixed-Use</td><td>22.7</td><td class="hi">41.0</td><td class="lo">7.5</td><td>28.0</td><td>16.3</td><td>16.8</td><td class="lo">9.0</td><td>11.4</td><td>18.2</td><td>12.7</td><td>17.8</td><td class="lo">8.5</td><td>20.8</td><td class="dim">7.8</td></tr>
+        <tr><td>Office</td><td>11.2</td><td>14.5</td><td class="lo">7.2</td><td>11.0</td><td>9.8</td><td>16.3</td><td>11.7</td><td>16.0</td><td>17.2</td><td class="lo">4.0</td><td>14.0</td><td>11.4</td><td>14.7</td><td class="dim">8.3</td></tr>
+        <tr><td>Conv. Store / Gas Station</td><td>17.0</td><td>17.3</td><td>14.4</td><td>25.6</td><td class="dim">—</td><td class="hi">31.0</td><td>20.8</td><td>18.5</td><td class="hi">38.0</td><td class="hi">38.3</td><td>12.5</td><td class="dim">—</td><td>28.2</td><td class="dim">9.0</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">Education bids/project: 3.8 (May 25) → 46.5 (May 26). Supply collapsed, demand surged — clearest supply constraint signal in the dataset. Jun 26 bids are low because projects just posted; engagement has not yet accumulated.</div>
+  </div>
+  <div class="tbl-outer" id="bue-dls-wrap" style="display:none">
+    <div class="tbl-title">Avg downloads per project by building use type <span class="badge badge-v">Engagement depth</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Building Use Type</th><th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th></tr></thead>
+      <tbody>
+        <tr><td>Restaurant</td><td>74.0</td><td>63.5</td><td>88.1</td><td>68.3</td><td>91.4</td><td>88.0</td><td>65.2</td><td>86.3</td><td>105.1</td><td>77.6</td><td>62.1</td><td>64.5</td><td>77.5</td><td class="dim">60.9</td></tr>
+        <tr><td>Retail Store</td><td class="lo">52.8</td><td>76.1</td><td>57.6</td><td>64.6</td><td>106.0</td><td>67.9</td><td>87.9</td><td>79.7</td><td>60.8</td><td class="hi">103.1</td><td>83.7</td><td>75.6</td><td>85.2</td><td class="dim">56.5</td></tr>
+        <tr><td>Education / School / Univ.</td><td class="lo">49.5</td><td class="hi">173.7</td><td>74.7</td><td>110.0</td><td>99.1</td><td class="hi">141.1</td><td class="lo">33.6</td><td>86.9</td><td class="hi">161.0</td><td>91.2</td><td>102.8</td><td class="hi">159.6</td><td class="hi warn">257.0</td><td class="dim">70.4</td></tr>
+        <tr><td>Medical</td><td>85.8</td><td>118.6</td><td>84.4</td><td>126.8</td><td>97.8</td><td>124.0</td><td class="hi">147.4</td><td>109.0</td><td>133.5</td><td>97.3</td><td>102.5</td><td>88.0</td><td>83.4</td><td class="dim">40.5</td></tr>
+        <tr><td>Municipal</td><td>107.0</td><td class="hi">229.5</td><td>73.7</td><td class="hi">273.0</td><td>78.3</td><td class="lo">51.0</td><td>85.4</td><td>150.0</td><td>111.8</td><td class="lo">38.4</td><td class="hi">123.1</td><td>96.0</td><td>73.3</td><td class="dim">63.7</td></tr>
+        <tr><td>Mixed-Use</td><td>109.0</td><td class="hi">174.3</td><td class="lo">55.5</td><td class="hi">177.0</td><td>111.3</td><td>115.2</td><td>114.5</td><td>104.6</td><td>123.0</td><td>78.3</td><td>115.8</td><td class="lo">55.8</td><td class="hi">148.5</td><td class="dim">63.5</td></tr>
+        <tr><td>Office</td><td>70.8</td><td>86.8</td><td>61.6</td><td>71.3</td><td>71.0</td><td class="hi">103.0</td><td>81.0</td><td>102.2</td><td class="hi">114.8</td><td class="lo">50.0</td><td>88.0</td><td>70.6</td><td>90.8</td><td class="dim">57.7</td></tr>
+        <tr><td>Conv. Store / Gas Station</td><td>76.7</td><td>119.7</td><td>83.3</td><td>125.8</td><td class="dim">—</td><td>124.0</td><td>93.0</td><td>91.2</td><td class="hi">225.3</td><td class="hi">153.0</td><td>76.5</td><td class="dim">—</td><td>135.2</td><td class="dim">91.0</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">Education downloads/project: 49.5 (May 25) → 257.0 (May 26). Subs are downloading every available Education project far more intensely as supply collapses. Jun 26 downloads will continue accumulating.</div>
+  </div>
+</div>
+
+<!-- CONSTRUCTION TYPE -->
+<div class="panel" id="panel-ct">
+  <div class="tbl-outer">
+    <div class="tbl-title">Construction type — volume and % share monthly <span class="badge badge-p">% Share</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Construction Type</th><th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th></tr></thead>
+      <tbody>
+        <tr class="group-hdr"><td colspan="15">VOLUME (project count)</td></tr>
+        <tr><td>Commercial</td><td>78</td><td>76</td><td>80</td><td>82</td><td>75</td><td class="hi">84</td><td>63</td><td>61</td><td>68</td><td>70</td><td>66</td><td>67</td><td>76</td><td class="hi dim">85</td></tr>
+        <tr><td>Government / Public</td><td>14</td><td>14</td><td>14</td><td>13</td><td class="hi">21</td><td>19</td><td>16</td><td>13</td><td>16</td><td>18</td><td>13</td><td>12</td><td class="lo">11</td><td class="hi dim">23</td></tr>
+        <tr><td>Commercial + Govt</td><td>8</td><td>3</td><td>3</td><td>3</td><td>3</td><td>2</td><td>1</td><td>3</td><td>2</td><td>3</td><td>2</td><td>3</td><td>1</td><td class="dim">1</td></tr>
+        <tr><td>Civil, Commercial</td><td>2</td><td>3</td><td>1</td><td>4</td><td>3</td><td>3</td><td>1</td><td>2</td><td>3</td><td>1</td><td class="hi">8</td><td class="lo">0</td><td>2</td><td class="dim">1</td></tr>
+        <tr><td>Residential</td><td>4</td><td>4</td><td>6</td><td class="lo">0</td><td>3</td><td>1</td><td>2</td><td>1</td><td>4</td><td class="lo">0</td><td class="lo">0</td><td>1</td><td>3</td><td class="dim">1</td></tr>
+        <tr class="group-hdr"><td colspan="15">% OF MONTHLY TOTAL</td></tr>
+        <tr><td>Commercial</td><td>69.6%</td><td>73.8%</td><td>71.4%</td><td class="hi">73.9%</td><td>68.2%</td><td>70.6%</td><td class="lo">67.7%</td><td>67.0%</td><td>66.0%</td><td>71.4%</td><td>65.3%</td><td class="hi">74.4%</td><td class="hi">75.2%</td><td class="dim">70.2%</td></tr>
+        <tr><td>Government / Public</td><td>12.5%</td><td>13.6%</td><td>12.5%</td><td>11.7%</td><td class="hi">19.1%</td><td>16.0%</td><td class="hi">17.2%</td><td>14.3%</td><td>15.5%</td><td class="hi">18.4%</td><td>12.9%</td><td>13.3%</td><td class="lo warn">10.9%</td><td class="hi dim">19.0%</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">Commercial share trending upward in 2026 (74–75%) vs 68–72% typical range in 2025. Government/Public share hit its low point in May 2026 (10.9%). Jun 2026 shows recovery to 19.0% — worth monitoring.</div>
+  </div>
+</div>
+
+<!-- PROJECT TYPE -->
+<div class="panel" id="panel-pt">
+  <div class="tbl-outer">
+    <div class="tbl-title">Project type — volume and % share monthly <span class="badge badge-v">New · Reno · TI · Site</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Project Type</th><th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th></tr></thead>
+      <tbody>
+        <tr class="group-hdr"><td colspan="15">VOLUME (project count)</td></tr>
+        <tr><td>Renovation / Remodel / Repair</td><td>39</td><td>33</td><td>41</td><td>36</td><td class="hi">45</td><td class="hi">50</td><td>28</td><td>31</td><td>34</td><td class="lo">24</td><td>28</td><td>27</td><td>28</td><td>35</td></tr>
+        <tr><td>New Construction with Site Work</td><td>30</td><td>31</td><td>31</td><td class="hi">36</td><td>35</td><td class="hi">36</td><td>25</td><td>20</td><td>24</td><td>30</td><td>24</td><td class="lo">16</td><td>21</td><td class="hi">33</td></tr>
+        <tr><td>Unknown / Not specified</td><td>18</td><td>16</td><td>19</td><td>21</td><td>15</td><td>14</td><td>21</td><td>18</td><td class="hi">23</td><td class="hi">25</td><td class="hi">25</td><td>17</td><td class="hi">24</td><td>20</td></tr>
+        <tr><td>Tenant Build-Out</td><td>21</td><td>15</td><td>13</td><td>11</td><td>12</td><td>13</td><td>12</td><td>13</td><td>14</td><td class="lo">9</td><td>17</td><td class="hi">19</td><td>15</td><td class="hi">20</td></tr>
+        <tr><td>New Construction, No Site</td><td class="lo">1</td><td>3</td><td>4</td><td>5</td><td class="lo">1</td><td>5</td><td>5</td><td>6</td><td>3</td><td>5</td><td class="lo">1</td><td>4</td><td class="hi">7</td><td>4</td></tr>
+        <tr><td>Site Work Only</td><td>2</td><td>4</td><td>3</td><td>2</td><td class="lo">0</td><td class="lo">1</td><td class="lo">0</td><td>1</td><td>2</td><td>4</td><td>5</td><td class="hi">5</td><td class="hi">5</td><td class="hi">7</td></tr>
+        <tr class="group-hdr"><td colspan="15">% OF MONTHLY TOTAL</td></tr>
+        <tr><td>Renovation / Remodel / Repair</td><td>34.8%</td><td>32.0%</td><td>36.6%</td><td>32.4%</td><td class="hi">40.9%</td><td class="hi">42.0%</td><td>30.1%</td><td>34.1%</td><td>33.0%</td><td class="lo">24.5%</td><td>27.7%</td><td>30.0%</td><td>27.7%</td><td>28.9%</td></tr>
+        <tr><td>New Construction with Site Work</td><td>26.8%</td><td>30.1%</td><td>27.7%</td><td class="hi">32.4%</td><td>31.8%</td><td>30.3%</td><td>26.9%</td><td>22.0%</td><td>23.3%</td><td class="hi">30.6%</td><td>23.8%</td><td class="lo">17.8%</td><td>20.8%</td><td>27.3%</td></tr>
+        <tr><td>Tenant Build-Out</td><td>18.8%</td><td>14.6%</td><td>11.6%</td><td>9.9%</td><td>10.9%</td><td>10.9%</td><td>12.9%</td><td>14.3%</td><td>13.6%</td><td>9.2%</td><td>16.8%</td><td class="hi">21.1%</td><td>14.9%</td><td class="hi">16.5%</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- VALUE -->
+<div class="panel" id="panel-value">
+  <div class="tbl-outer">
+    <div class="tbl-title">Project value distribution — % of monthly total (all projects including unknown) <span class="badge badge-p">% Share</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Value Bracket</th><th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th></tr></thead>
+      <tbody>
+        <tr><td>&lt; $500K</td><td>17.9%</td><td>8.7%</td><td>14.3%</td><td>15.3%</td><td class="lo">6.4%</td><td>14.3%</td><td>8.6%</td><td>17.6%</td><td>9.7%</td><td>14.3%</td><td>15.8%</td><td>12.2%</td><td>15.8%</td><td class="dim">15.7%</td></tr>
+        <tr><td>$500K – $1M</td><td>6.2%</td><td>11.7%</td><td>10.7%</td><td>10.8%</td><td>10.9%</td><td>7.6%</td><td class="hi">19.4%</td><td>5.5%</td><td>8.7%</td><td>12.2%</td><td>7.9%</td><td class="hi">16.7%</td><td>7.9%</td><td class="dim">3.3%</td></tr>
+        <tr><td>$1M – $5M</td><td class="hi">20.5%</td><td>19.4%</td><td>17.0%</td><td class="hi">22.5%</td><td class="hi">23.6%</td><td class="hi">23.5%</td><td>18.3%</td><td class="hi">23.1%</td><td>18.4%</td><td>20.4%</td><td>13.9%</td><td>13.3%</td><td class="lo warn">10.9%</td><td class="dim">14.9%</td></tr>
+        <tr><td>$5M – $10M</td><td>3.6%</td><td>5.8%</td><td>6.2%</td><td>4.5%</td><td class="hi">10.9%</td><td class="hi">7.6%</td><td>3.2%</td><td>4.4%</td><td class="hi">7.8%</td><td>6.1%</td><td>4.0%</td><td class="lo">1.1%</td><td class="lo">0.0%</td><td class="dim">2.5%</td></tr>
+        <tr><td>$10M – $25M</td><td>4.5%</td><td>1.9%</td><td>1.8%</td><td>3.6%</td><td class="lo">0.9%</td><td>3.4%</td><td>1.1%</td><td>3.3%</td><td class="lo">1.0%</td><td class="lo">1.0%</td><td>2.0%</td><td class="hi">5.6%</td><td>2.0%</td><td class="hi dim">5.8%</td></tr>
+        <tr><td>$25M+</td><td class="lo">0.0%</td><td>1.9%</td><td class="lo">0.0%</td><td>1.8%</td><td class="lo">0.0%</td><td class="lo">0.0%</td><td class="lo">0.0%</td><td>1.1%</td><td class="lo">0.0%</td><td>1.0%</td><td>1.0%</td><td>1.1%</td><td class="lo">0.0%</td><td class="lo dim">0.0%</td></tr>
+        <tr><td class="dim">Unknown / blank</td><td class="dim">47.3%</td><td class="dim">50.5%</td><td class="dim">50.0%</td><td class="dim">41.4%</td><td class="dim">47.3%</td><td class="dim">43.7%</td><td class="dim">49.5%</td><td class="dim">45.1%</td><td class="dim">54.4%</td><td class="dim">44.9%</td><td class="dim">55.4%</td><td class="dim">50.0%</td><td class="dim">63.4%</td><td class="dim">57.9%</td></tr>
+        <tr class="group-hdr"><td colspan="15">MEDIAN VALUE (where populated)</td></tr>
+        <tr><td>Median project value</td><td>$1.0M</td><td>$1.0M</td><td>$950K</td><td>$1.1M</td><td class="hi">$1.75M</td><td>$1.1M</td><td>$800K</td><td>$1.2M</td><td class="hi">$1.5M</td><td>$1.0M</td><td>$800K</td><td>$800K</td><td class="lo warn">$650K</td><td class="dim">$1.0M</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">$1M–$5M bracket: 20–23% share in mid-2025 → 10.9% in May 2026. The mid-size project bracket has nearly halved as a share of total projects. Unknown/blank rate increasing in 2026 means actual distributions should be interpreted with caution — only ~37-50% of projects have a value populated.</div>
+  </div>
+</div>
+
+<!-- GC BEHAVIOR -->
+<div class="panel" id="panel-gc">
+  <div class="tbl-outer">
+    <div class="tbl-title">GC posting behavior — new vs returning and projects per GC <span class="badge badge-v">GC Activity</span></div>
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>Metric</th><th>May 25</th><th>Jun 25</th><th>Jul 25</th><th>Aug 25</th><th>Sep 25</th><th>Oct 25</th><th>Nov 25</th><th>Dec 25</th><th>Jan 26</th><th>Feb 26</th><th>Mar 26</th><th>Apr 26</th><th>May 26</th><th class="dim">Jun 26*</th></tr></thead>
+      <tbody>
+        <tr><td>Total unique GCs posting</td><td>81</td><td>74</td><td>75</td><td>76</td><td>77</td><td>74</td><td class="lo">63</td><td>67</td><td>75</td><td class="lo">66</td><td class="hi">81</td><td class="lo">63</td><td>68</td><td class="hi dim">84</td></tr>
+        <tr><td>New GCs (first post in dataset)</td><td class="dim">81¹</td><td class="warn">46</td><td class="warn">40</td><td class="warn">35</td><td>27</td><td>21</td><td>19</td><td class="lo">15</td><td>21</td><td>17</td><td>22</td><td class="lo">15</td><td>17</td><td class="dim">18</td></tr>
+        <tr><td>Returning GCs</td><td class="dim">0¹</td><td>28</td><td>35</td><td>41</td><td>50</td><td class="hi">53</td><td>44</td><td class="hi">52</td><td class="hi">54</td><td>49</td><td class="hi">59</td><td>48</td><td>51</td><td class="hi dim">66</td></tr>
+        <tr><td>% new GCs</td><td class="dim">100%¹</td><td class="warn">62%</td><td class="warn">53%</td><td class="warn">46%</td><td>35%</td><td>28%</td><td>30%</td><td class="lo">22%</td><td>28%</td><td>26%</td><td>27%</td><td class="lo">24%</td><td>25%</td><td class="lo dim">21%</td></tr>
+        <tr><td>Projects per GC per month</td><td>1.4</td><td>1.4</td><td>1.5</td><td>1.5</td><td>1.4</td><td class="hi">1.6</td><td>1.5</td><td>1.4</td><td>1.4</td><td>1.5</td><td class="lo">1.2</td><td>1.4</td><td>1.5</td><td class="dim">1.4</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">¹ May 2025 is the dataset start — all GCs appear "new" by definition. New GC % stabilizes at 22–30% from Dec 2025 onward. Projects per GC is completely flat at 1.4–1.6 throughout — GCs who are posting have not changed their frequency. The GC pool size is what fluctuates.</div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>Source: New_Monthly_Project_Data_Tab__70_.csv · GC Posted · master/single · valid · 1,465 projects filtered · May 2025–Jun 2026</span>
+  <span>PlanHub Market Development · June 2026</span>
+</div>
+</div>
+
+<script>
+function showPanel(id, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+function toggleBUT(view, btn){
+  document.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('but-vol-wrap').style.display = view==='vol'?'':'none';
+  document.getElementById('but-pct-wrap').style.display = view==='pct'?'':'none';
+}
+function toggleBUTEng(view, btn){
+  document.querySelectorAll('#panel-but_eng .view-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('bue-bids-wrap').style.display = view==='bids'?'':'none';
+  document.getElementById('bue-dls-wrap').style.display = view==='dls'?'':'none';
+}
+</script>
+</body>
+</html>
